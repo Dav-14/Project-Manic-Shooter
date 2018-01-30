@@ -13,6 +13,7 @@ class grille:
         #grid = []
         for i in range(self.ligne):#On parcours le nombres de ligne
             l = [val]*self.colonne#Ajoute à chaque tour de boucle la valeur à la ligne
+            print(l)
             self.grid.append(l)#Ajoute la variable l à la grille.
         return self.grid#Retourne la grille.
 

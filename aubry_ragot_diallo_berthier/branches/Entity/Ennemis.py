@@ -20,12 +20,12 @@ class ennemis:
             for enn in lEnnemis:
                 lPosEnnemis.append([enn.posX, enn.posY])
 
-            posX, posY = rd_POS(maGrille.ligne)  #Initialisation de position potentiel d'un nouvel ennemi
+            posX, posY = rd_POS(maGrille.colonne)  #Initialisation de position potentiel d'un nouvel ennemi
 
             while [posX,posY] in lPosEnnemis:   #Vérification s'il en existe pas un de present sur les positions générés
-                posX, posY = rd_POS(maGrille.ligne)
+                posX, posY = rd_POS(maGrille.colonne)
         else:
-            posX, posY = rd_POS(maGrille.ligne)
+            posX, posY = rd_POS(maGrille.colonne)
 
         print(posX,posY)
         print(maGrille.grid[posX][posY])

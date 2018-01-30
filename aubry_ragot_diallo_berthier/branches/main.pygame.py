@@ -94,25 +94,26 @@ pygame.display.set_caption(switch("titre"))
 
 continuer = True
 
-#preset test
-preset = True
-keys = []
-while preset:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-        if event.type == pygame.KEYDOWN:
-            key = pygame.key.get_mods()
-            print(key)
-            pygame.display.update()
-            if event.key == pygame.K_ESCAPE:
-                preset = False
+#Pre_game_Menu test
+def Menu():
+    Pre_game_Menu = True
+    keys = []
+    while Pre_game_Menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                key = pygame.key.get_mods()
+                print(key)
+                pygame.display.update()
+                if event.key == pygame.K_ESCAPE:
+                    preset = False
 
 #Fin preset test
 
 flags = [0,0,0,0,0]
-
+now = pygame.time.get_ticks()
 while continuer:
     maGrille.affiche()
     pygame.time.Clock().tick(fps)#Actualisation toutes les 5 frames
