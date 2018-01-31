@@ -57,18 +57,16 @@ print(maGrille)
 monhero = mHero.hero()
 monhero.ajoutHero(maGrille)
 ###################################
-def waves(nb, listeEnnemis):
-    
-    if nb == "init":
-        for i in range(5):
-            ennemi = mEnnemis.ennemis()
-            ennemi.ajoutEnnemis(listeEnnemis, maGrille)
-            listeEnnemis.append(ennemi)
+def waves(listeEnnemis, nb=5):#5 Ennemies par defaut, on mettera une fonction type log pour les 10 premières vagues puis un fonction lineaire et EXP a partir d'un moment lointain.
+    for i in range(nb):
+        ennemi = mEnnemis.ennemis()
+        ennemi.ajoutEnnemis(listeEnnemis, maGrille)
+        listeEnnemis[i] = ennemi
     return listeEnnemis
 ###################################
 # Initialisation de la première vague d'énnemie
-listeEnnemis = []
-listeEnnemis = waves("init", listeEnnemis)
+listeEnnemis = {}
+listeEnnemis = waves(listeEnnemis)
 ###################################
 ###################################
 # Menu PAUSE
