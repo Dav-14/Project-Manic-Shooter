@@ -22,9 +22,10 @@ global colonne
 global ligne
 global val
 
-Height = 800 #Hauteur
+Height = 900 #Hauteur
 Width = 500 #Largeur
 val = "-"
+fps = 60
 
 pygame.init()
 
@@ -35,16 +36,9 @@ pygame.display.set_caption(switch("titre"))
 # CREATION DU HERO
 Spaceship = mHero.hero(style="spaceCraft1.png")
 
-print(Spaceship.width,Spaceship.height)
-
-Spaceship.style = pygame.transform.scale(Spaceship.style, (int((Spaceship.width)/3),int((Spaceship.height)/3)))
-
-x = Width/2 - Spaceship.style.get_width()/2
-y = Height - Spaceship.style.get_height()*2
-
-Window.blit(Spaceship.style, (x, y))#A mettre dans une fonction
+Window.blit(Spaceship.style, (Spaceship.posX, Spaceship.posY))#A mettre dans une fonction de type DRAW().
 pygame.display.flip()
-print("Entity HERO.")
+
 ###################################
 #def waves(dictEnnemis, nb=5):#Valeur 5 ennemies de bases, on peut la changer en donnant nb=nombre en arguments
 #    for i in range(nb):
@@ -100,7 +94,7 @@ def Game():
             #tir = mTire.tire(monhero,maGrille)
             #dictTire[len(dictTire)] = tir
         if flags[1] == 1:
-            monhero.haut(maGrille)
+            Spaceship.haut()
         if flags[2] == 1:
             monhero.bas(maGrille)
         if flags[3] == 1:
@@ -110,6 +104,7 @@ def Game():
         #if len(dictTire) >= 1:
             #mTire.col_tire(dictEnnemis,dictTire)
         pygame.display.update()
+        pygame.time.Clock().tick(fps)
 Game()
 pygame.quit()
 quit()
