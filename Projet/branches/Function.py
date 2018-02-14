@@ -7,11 +7,6 @@ from pygame.locals import *
 import Entity.Hero as mHero
 import Entity.Ennemis as mEnnemis
 
-@staticmethod
-def draw():
-    '''
-    eaz
-    '''
-def Resolution(imgPyg):
-    img = imgPyg.style
-    return img.get_width(), img.get_height()
+def __Draw():
+    Window.blit(Background, (0,0))
+    Window.blit(Spaceship.style, (Spaceship.posX, Spaceship.posY))
