@@ -1,0 +1,27 @@
+{
+    "typ_bullet":
+    {
+        "single":{"n":1,"speed":-5,"Cooldown":600,"damage":10, 
+            "position":{"0":{"x":"x + sw/2","y":"y - h","2":0}}, 
+            "fonction":{"0":{"x":"x","y":"y + s"}}},
+        "double":{"n":2,"speed":-5,"Cooldown":0,"damage":20, 
+            "position":{"0":{"x":"x + sw/2 -2*w","y":"y - h","angle":0},"1":{"x":"x + sw/2 + 2*w","y":"y - h","angle":0}},
+            "fonction":{"0":{"x":"x","y":"y + s"},"1":{"x":"x","y":"y + s"}}},
+        "triple":{"n":3,"speed":-4,"Cooldown":400,"damage":35,
+            "position":[["x + sw/2","y - h",0],["x + sw/2 -3*w", "y - h",15],["x + sw/2 +2*w", "y - h",-15]],
+            "fonction":[["x","y + s"],["x","y + s"],["x","y + s"]]},
+        "quad":{"n":4,"speed":-2,"Cooldown":300,"damage":40,
+            "position":[["x + sw/2 -2*w", "y - h",0],["x + sw/2 + 2*w", "y - h",0],["x + sw/2 -4*w","y-h",15],["x + sw/2 +4*w","y-h",-15]],
+            "fonction":[]}
+    },
+    "style":
+    {
+        "1":{"size":1, "life":100}
+
+    },
+    "deplacement":
+    {
+        "linear":{},
+        "curve":{}
+    }
+}

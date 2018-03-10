@@ -1,0 +1,31 @@
+{
+    "linear_simple":{
+        "Appears":{
+            "Chance":1,
+            "lower":-0.10
+        },
+        "function":{
+            "fct":["linear", "y = ax+b",3],
+            "a":[1,-1,1],
+            "b":[0, "Width", 0],
+            "Xmin":[0,"Width","Width/2"],
+            "Xmax":["Width", 0, "Width/2"],
+            "time_break":[2000,2000,1500]
+        }
+    },
+    "ennemy_wave":{
+        "function":{
+            "fct":{
+                "ln(x)":{
+                    "Wave Min":0,
+                    "Wave Max":15
+                },
+                "exp(x)":{
+                    "Wave Min":16,
+                    "Wave Max":null
+                }
+            }
+        },
+        "Time_btw_waves":"break"
+    }
+}

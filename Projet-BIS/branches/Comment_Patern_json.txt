@@ -1,0 +1,4 @@
+Mot clé norme:
+    Width: Largeur de la fenetre,
+    break: PAUSE, appuyez sur Barre espace pour lancez la future Wave
+    null: infini +

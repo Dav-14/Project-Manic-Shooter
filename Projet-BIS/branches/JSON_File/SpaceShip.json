@@ -1,0 +1,15 @@
+{
+    "style":
+    {
+        "1":{"reactor":1, "life":100},
+        "2":{"reactor":1, "life":110},
+        "3":{"reactor":1, "life":120},
+        "4":{"reactor":1, "life":130},
+        "5":{"reactor":1, "life":150},
+        "6":{"reactor":1, "life":160},
+        "7":{"reactor":1, "life":170},
+        "8":{"reactor":1, "life":200},
+        "9":{"reactor":1, "life":210},
+        "10":{"reactor":1, "life":250}
+    }
+}
