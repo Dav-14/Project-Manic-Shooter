@@ -98,8 +98,23 @@ def Pause():
 
 
 def Jeux(Hht, Wth):
+    pygame.init()
+
     Set = Settings.Settings()
     Set.read()
+
+    def load_json_to_dict(path):
+        with open(path) as file:  # On récupère le fichier
+            _dict_ = json.load(file)
+        return _dict_ 
+
+    ### Charge un dictionnaire de données sur les differentes "Balles" ###
+    # File_path = ['Entity/Bullet/Bullet_type.json', 'Patern.json'] 
+    _dict_Bullet_type = load_json_to_dict("JSON_File/Bullet_type.json")
+    _dict_Bullet_type = Blt.loader_fct_bullet(_dict_Bullet_type)#Permet de creer les fonctions une seules fois, en les remplacant a leur endroit respectif dans le dictionnaire.
+    
+    _dict_Patern = load_json_to_dict("JSON_File/Patern.json")
+    _dict_Patern = Wvs.loader_patern(_dict_Patern)
 
     Height, Width = Hht, Wth
     if Set.file_here:
@@ -107,9 +122,6 @@ def Jeux(Hht, Wth):
         Width = Set._dict_["Width"]  # Largeur
     fps = Set._dict_["fps"]
 
-    pygame.init()
-    # print("DRIVER :",pygame.display.get_driver())
-    # input()
     Window = pygame.display.set_mode((Width, Height))
     Clock = pygame.time.Clock()
     FontFPS = pygame.font.Font(None, 30)
@@ -118,56 +130,37 @@ def Jeux(Hht, Wth):
     Background = pygame.image.load(os.path.join("..", "Ressources", "Background","Background.jpg")).convert()
     Background = pygame.transform.scale(Background, (Width,Height))#Charge l'image
 
-    ###################################
-    #def waves(dictEnnemis, nb=5):#Valeur 5 ennemies de bases, on peut la changer en donnant nb=nombre en arguments
-    #    for i in range(nb):
-    #        print("i=",i)
-    #        ennemi = mEnnemis.ennemis()
-    #        ennemi.ajoutEnnemis(dictEnnemis, maGrille)
-    #        dictEnnemis[i] = ennemi
-    #    return dictEnnemis
-    ###################################
-    # Initialisation de la première vague d'énnemie
-
-    def load_json_to_dict(path):
-        with open(path) as file:  # On récupère le fichier
-            _dict_ = json.load(file)
-        return _dict_
-
-    _dict_Bullet_type = load_json_to_dict("JSON_File/Bullet_type.json")
-    _dict_Bullet_type = Blt.loader_fct_bullet(_dict_Bullet_type)#Permet de creer les fonctions une seules fois, en les remplacant a leur endroit respectif dans le dictionnaire.
-    
-    _dict_Patern = load_json_to_dict("JSON_File/Patern.json")
-    _dict_Patern = Wvs.loader_patern(_dict_Patern)
-
-    ### Charge un dictionnaire de données sur les differentes "Balles" ###
-    # File_path = ['Entity/Bullet/Bullet_type.json', 'Patern.json'] 
 
     Wave = Wvs.Waves(_dict_Patern)#On initialise notre objet de Vague
-    Wave.patern_choose()
     print(Wave.patern)
-    Wave.wave_init()
 
-    #input()
+    #Groupe d'entité ALLIE
     __GroupBullet_Ally = ENTGroup.Entity()#A mettre en variables du vaisseau
     __AllyG = ENTGroup.Entity()
 
     Spaceship = Ally.allyShip()
     Spaceship.Reactor_innit()
-    Spaceship.bullet_type = "theo"
+    Spaceship.bullet_type = "quad"#Ligne non nécéssaire
+
     __AllyG.add(Spaceship)#On ajoute le vaisseau dans un group, pour ne pas utilisé BLIT sur le vaisseau cx)
 
     BLACK = (0, 0, 0)
     continuer = True
+    Temps_ecoule = 0
     while continuer:
         Window.blit(Background, (0,0))
         #Window.fill(BLACK)
         delta_time = Clock.tick(fps) * 0.001 #En ms -> x0.001 pour mettre en seconde et delta time : c'est le temps entre 2 images.
         FPS = Clock.get_fps()
 
+        Temps_ecoule += delta_time
+
         pressed = pygame.key.get_pressed()
         buttons = {pygame.key.name(k) for k,v in enumerate(pressed) if v}#Recupère le nom des touches PRESSE
         #print(buttons)
+        if len(buttons) >=1 and Wave.first_press_key != None and Temps_ecoule >= 2:
+            Wave.first_press_key = True
+            Wave.startGame()
         if Set._dict_["up"] in buttons:
             Spaceship.up()
         if Set._dict_["down"] in buttons:
@@ -196,15 +189,21 @@ def Jeux(Hht, Wth):
                 quit()
     
         __AllyG.draw(Window)
+
         __GroupBullet_Ally.update(_dict_Bullet_type, delta_time)
         __GroupBullet_Ally.draw(Window)
+
+        Wave.update()
 
         fps_render = FontFPS.render("FPS : {}".format(int(FPS)), True, (255, 255, 255))
         nb_sprites = len(__GroupBullet_Ally.sprites())
         counter_render = FontFPS.render("NBs : {}".format(nb_sprites),
             True, (255, 255, 255))
+        Time = FontFPS.render("Time : {0:.2f}".format(float(Temps_ecoule)), True, (255, 255, 255))
+
         Window.blit(fps_render, (100, 100))
         Window.blit(counter_render, (100, 150))
+        Window.blit(Time, (100, 200))
 
         pygame.display.update()
 

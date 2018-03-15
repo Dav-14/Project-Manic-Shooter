@@ -5,21 +5,19 @@ from pygame.locals import *
 import Entity.SpaceShip as _ss_
 
 class EnnShip(_ss_.SpaceShip):
-    def __init__(self, FCTposX, FCTposY, Pobj,style=1, __speed__ = 5, life=100, dmg=1, bullet_type="single_ennemy"):#Il y a 2 type SpaceShip et Ennemy, ils nous aideront pour les insteractions entre group
-        Type = "Ennemy_"
+    def __init__(self, FCTposX, FCTposY, CalcposX, CalcposY, Pobj,style=1, __speed__ = 5, life=100, dmg=1, bullet_type="single_ennemy"):#Il y a 2 type SpaceShip et Ennemy, ils nous aideront pour les insteractions entre group
+        Type = "Ennemy"
         super().__init__(life, dmg ,Type, style, __speed__,bullet_type)
         self.bullet_style = 41
-
-
         self.init_pos(FCTposX, FCTposY)
         self.posX, self.posY = self.rect.x, self.rect.y 
 
-        self.FCTnewposXX = FCTnewposXX
-        self.FCTnewposYY = FCTnewposYY
+        self.FCTnewposXX = CalcposX
+        self.FCTnewposYY = CalcposY
 
         self.break_btw_phase = None
         self.breaked = None
-        self.patern_done = False
+        self.phase_done = False
         self.phase = 0
         self.position = Pobj
         self.passiv = False #Si true ne pourra pas prendre de dégats
@@ -40,24 +38,24 @@ class EnnShip(_ss_.SpaceShip):
     def patern_executed(self):
 
         if self.posX <= (0 - 2*self.width)  or self.posX >= (self.Surf_Width + 2*self.width):
-            self.patern_done = True
+            self.phase_done = True
             self.passiv = True
             self.breaked = pygame.time.get_ticks()
         if self.posY <= (0 - 2*self.height) or self.posY >= (self.Surf_Height + 2*self.height):
-            self.patern_done = True
+            self.phase_done = True
             self.passiv = True
             self.breaked = pygame.time.get_ticks()
 
 
     def update(self):
 
-        if not self.patern_done:
+        if not self.phase_done:
             self.new_pos()
             self.patern_executed()
         else:
             now = pygame.time.get_ticks()
             if now - self.breaked >= self.break_btw_phase:
-                self.patern_done = False
+                self.phase_done = False
                 self.passiv = False
             
         if self.life == 0:

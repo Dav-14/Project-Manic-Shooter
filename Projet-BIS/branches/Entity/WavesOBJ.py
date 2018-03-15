@@ -38,7 +38,9 @@ def loader_patern(_dict_Patern):
                 _dict_Patern["patern"][i]["fonction"][j][k]["x"] = Fct1
                 _dict_Patern["patern"][i]["fonction"][j][k]["y"] = Fct2
         
-
+    for i in _dict_Patern["ennemy_wave"]["fonction"]:
+        Fct = lambdify((v), sp.sympify(_dict_Patern["ennemy_wave"]["fonction"][i]), modules=["math"])
+        _dict_Patern["ennemy_wave"]["fonction"][i]= Fct
     return(_dict_Patern)
 
 class Waves():
@@ -50,16 +52,19 @@ class Waves():
         self.patern = None
         self.patern_duration = None
 
-        self.wave = 0
+        self.wave = 1#On commence par la première wave
         self.wave_i = 0
         self.wave_FCT = self._dict_["ennemy_wave"]["fonction"][str(self.wave_i)]
         self.wave_change = None
 
-        self.wave_change_init()
-
+        self.phase = 0
 
         self.end_patern = False
         self.Pause = False
+
+        self.first_press_key = False
+        self.start = 5000
+        self.begin = None
 
         self.__GroupBullet_Ennemy = ENTGroup.Entity()
         self.__GroupSHIP = ENTGroup.Entity()
@@ -67,6 +72,9 @@ class Waves():
         self.numbers_ennemy = 0
         self.Cooldown_ennemy = 0
         self.last_ennemy_spawn = 0
+
+        self.numbers_ennemy_init()
+        self.patern_choose()
 
     def innit_prob(self):
 
@@ -102,41 +110,45 @@ class Waves():
 
         self.patern_duration = len(self._dict_["patern"][self.patern]["position"])
 
-    def init_ennemy(self):
-        if self.numbers_ennemy >= 1:
-            Ennemy = Enn.EnnShip()
-            self.__GroupSHIP.add(Ennemy)
-            self.numbers_ennemy -= 1
-            self.last_ennemy_spawn = pygame.time.get_ticks()
+    def init_one_ennemy(self, pos):
+
+        FCTposX = self._dict_["patern"][self.patern]["position"][str(self.phase)][str(pos)]["x"]
+        FCTposY = self._dict_["patern"][self.patern]["position"][str(self.phase)][str(pos)]["x"]
+        CalcposX = self._dict_["patern"][self.patern]["fonction"][str(self.phase)][str(pos)]["x"]
+        CalcposY = self._dict_["patern"][self.patern]["fonction"][str(self.phase)][str(pos)]["x"]
+
+        Ennemy = Enn.EnnShip(FCTposX,FCTposY,CalcposX,CalcposY,pos)
+        self.__GroupSHIP.add(Ennemy)
+
+        self.numbers_ennemy -= 1
 
     def wave_change_init(self):
-        if len(self._dict_["ennemy_wave"]["fonction"])>=1:
+        if len(self._dict_["ennemy_wave"]["fonction"]) > 1:
             self.wave_change = self._dict_["ennemy_wave"]["Wave change"][self.wave_i+1]
         else:
             self.wave_change = self._dict_["ennemy_wave"]["Wave change"][self.wave_i]
 
     def numbers_ennemy_init(self):
+        self.wave_change_init()
 
         if self.wave == self.wave_change:
             if len(self._dict_["ennemy_wave"]["fonction"])>= self.wave_i +1:
                 self.wave_i += 1
             self.wave_FCT = self._dict_["ennemy_wave"]["fonction"][str(self.wave_i)]
 
+        self.numbers_ennemy = self.wave_FCT(self.wave)
 
-    def wave_init(self):
+
+    def ennemy_init(self):
+
         for i in range(int(self._dict_["patern"][self.patern]["Appears"]["PO"])):
-            pos = self._dict_["patern"][self.patern]["position"]
-            #
-            #
-            #
-            #
-            #
-            #
+            self.init_one_ennemy(i)
+        self.last_ennemy_spawn = pygame.time.get_ticks()
 
     def phase_statement(self):
 
         for Sprite_obj in self.__GroupSHIP.sprites():
-            if Sprite_obj.patern_done:
+            if Sprite_obj.phase_done:
                 Sprite_obj.break_btw_phase = self._dict_["patern"][self.patern]["times_break"][str(Sprite_obj.position)][str(Sprite_obj.phase)]
                 if Sprite_obj.phase < self.patern_duration-1:
                     Sprite_obj.phase += 1
@@ -153,29 +165,35 @@ class Waves():
 
         FCTnewPosX = self._dict_["patern"][self.patern]["fonction"][str(sprite.phase)][str(sprite.position)]["y"]
         FCTnewPosY = self._dict_["patern"][self.patern]["fonction"][str(sprite.phase)][str(sprite.position)]["y"]
+
         sprite.FCTnewposXX = FCTnewPosX
         sprite.FCTnewposYY = FCTnewPosY
 
+    def startGame(self):
+        if self.first_press_key:
+            self.begin = pygame.time.get_ticks()
+            self.first_press_key = None
+            
 
     def update(self):
-
+        
         if self.end_patern:
             self.Pause = True
             self.patern_choose()
 
-        if not self.Pause and not self.end_patern:
+        if self.begin != None:
             now = pygame.time.get_ticks()
 
-            if self.last_ennemy_spawn - now >= self.Cooldown_ennemy:
-                self.init_ennemy()
+            if not self.Pause and not self.end_patern and (now - self.begin) >= self.start:
 
-            self.__GroupBullet_Ennemy.update()
-            self.__GroupSHIP.update()
-            self.phase_statement()
+                if now - self.last_ennemy_spawn >= self.Cooldown_ennemy and self.numbers_ennemy >= 2:
+                    self.ennemy_init()
 
-        
+                self.__GroupBullet_Ennemy.update()
+                self.__GroupSHIP.update()
+                self.phase_statement()
 
     def draw(self, window):
-
+          
         self.__GroupBullet_Ennemy.draw(window)
         self.__GroupSHIP.draw(window)

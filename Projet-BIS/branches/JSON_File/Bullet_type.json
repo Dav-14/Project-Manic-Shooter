@@ -69,15 +69,15 @@
         },
         "theo":{
             "n":3,
-            "speed":-100,
+            "speed":-300,
             "Cooldown":600,
             "damage":35,
             "position":{"0":{"x":"x + c/2 + w/2","y":"y - h","angle":0},
                         "1":{"x":"x + c/2 - 2 * w +20","y":"y - h","angle":0},
                         "2":{"x":"x + c/2 + 2 * w -20","y":"y - h","angle":0}},
-            "fonction":{"0":{"x":"x","y":"y + s*sin(t)"},
-                        "1":{"x":"x -  10*cos(100*t)","y":"y + s*sin(t)"},
-                        "2":{"x":"x + 10*cos(100*t)","y":"y + s*sin(t)"}
+            "fonction":{"0":{"x":"x","y":"y + t*s*sin(t)"},
+                        "1":{"x":"x -  10*cos(100*t)","y":"y + s*t*sin(t)"},
+                        "2":{"x":"x + 10*cos(100*t)","y":"y + s*t*sin(t)"}
                     }
         }
     },
