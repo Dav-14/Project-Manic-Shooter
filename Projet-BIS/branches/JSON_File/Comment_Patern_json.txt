@@ -1,0 +1,8 @@
+Mot clé norme:
+    Width: Largeur de la fenetre,
+    break: PAUSE, appuyez sur Barre espace pour lancez la future Wave
+    null: infini +
+
+
+"1":{"x":"x + s* cos(radians(a))","y":"y - s *radians(-a)* sin(radians(-a))"},
+"2":{"x":"x - s * cos(radians(a))","y":"y - s *radians(-a)* sin(radians(-a))"}

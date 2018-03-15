@@ -1,0 +1,15 @@
+\select@language {french}
+\contentsline {section}{\numberline {1}Manic Shooter}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}Pr\IeC {\'e}sentation}{1}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}diagramme}{2}{subsection.1.2}
+\contentsline {section}{\numberline {2}Cahier des charges}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}diagramme des besoins}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Une carte}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Un personnage}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Des ennemis}{3}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}D\IeC {\'e}placement}{3}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Tir}{4}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}collisions}{4}{subsection.2.7}
+\contentsline {section}{\numberline {3}Choix des utilitaires utiliser}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}Tkinter}{4}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Pygame}{4}{subsection.3.2}

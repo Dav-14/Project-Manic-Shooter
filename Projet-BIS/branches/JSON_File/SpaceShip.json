@@ -10,6 +10,6 @@
         "7":{"reactor":1, "life":170},
         "8":{"reactor":1, "life":200},
         "9":{"reactor":1, "life":210},
-        "10":{"reactor":1, "life":250}
+        "10":{"reactor":3, "life":250}
     }
 }

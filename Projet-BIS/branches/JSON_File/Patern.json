@@ -1,31 +1,66 @@
 {
-    "linear_simple":{
-        "Appears":{
-            "Chance":1,
-            "lower":-0.10
-        },
-        "function":{
-            "fct":["linear", "y = ax+b",3],
-            "a":[1,-1,1],
-            "b":[0, "Width", 0],
-            "Xmin":[0,"Width","Width/2"],
-            "Xmax":["Width", 0, "Width/2"],
-            "time_break":[2000,2000,1500]
-        }
-    },
-    "ennemy_wave":{
-        "function":{
-            "fct":{
-                "ln(x)":{
-                    "Wave Min":0,
-                    "Wave Max":15
+    "patern":{
+        "simple":{
+            "Appears":{
+                "PO":2,
+                "Chance":1,
+                "lower":-0.30, 
+                "upgrade":0.05
+            },
+            "position":{
+                "0":{
+                    "0":{
+                        "x":"c - 2*w",
+                        "y":"h"
+                    },
+                    "1":{
+                        "x":"x",
+                        "y":"y"           
+                    }},
+                "1":{
+                    "0":{
+                        "x":"x",
+                        "y":"y"
+                    },
+                    "1":{
+                        "x":"x",
+                        "y":"y"              
+                    }               
+                }},
+            "fonction":{
+                "0":{
+                    "0":{
+                        "x":"x",
+                        "y":"y"
+                    },
+                    "1":{
+                        "x":"x",
+                        "y":"y"
+                    }                     
                 },
-                "exp(x)":{
-                    "Wave Min":16,
-                    "Wave Max":null
+                "1":{
+                    "0":{
+                        "x":"x",
+                        "y":"y"
+                    },
+                    "1":{
+                        "x":"x",
+                        "y":"y"
+                    }
                 }
+            },
+            "times_break":{
+                "0":[2000,1000],
+                "1":[500,2000]
             }
+        }
         },
-        "Time_btw_waves":"break"
-    }
+    "ennemy_wave":{
+        "fonction":{
+                "0":"",
+                "15":""
+                    },
+        "Wave change":[0,15]
+                    
+                }
 }

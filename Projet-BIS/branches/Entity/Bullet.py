@@ -2,18 +2,41 @@ import time
 import os
 import pygame
 import sympy as sp
+from sympy.utilities.lambdify import lambdify
+from sympy.abc import x, y, s, a, t, w, h, c, v
+
 from pygame.locals import *
+
+
+def loader_fct_bullet(__dict_bullet):
+    for i in __dict_bullet["typ_bullet"]: 
+        for j in __dict_bullet["typ_bullet"][i]["position"]:
+        
+            Fct1 = lambdify((x, y, w, h, c, v), sp.sympify(__dict_bullet["typ_bullet"][i]["position"][j]["x"]), modules=["math"])
+            Fct2 = lambdify((x, y, w, h, c, v), sp.sympify(__dict_bullet["typ_bullet"][i]["position"][j]["y"]), modules=["math"])
+
+            __dict_bullet["typ_bullet"][i]["position"][j]["x"]= Fct1
+            __dict_bullet["typ_bullet"][i]["position"][j]["y"]= Fct2
+        
+        for j in __dict_bullet["typ_bullet"][i]["fonction"]:
+            
+            Fct1 = lambdify((x, y, s, a, t), sp.sympify(__dict_bullet["typ_bullet"][i]["fonction"][j]["x"]), modules=["math"])
+            Fct2 = lambdify((x, y, s, a, t), sp.sympify(__dict_bullet["typ_bullet"][i]["fonction"][j]["y"]), modules=["math"])
+
+            __dict_bullet["typ_bullet"][i]["fonction"][j]["x"]= Fct1
+            __dict_bullet["typ_bullet"][i]["fonction"][j]["y"]= Fct2
+
+    return __dict_bullet
 
 class bullet(pygame.sprite.Sprite):
     def __init__(self, spaceShip, __dict_bullet, i):
-        now = pygame.time.get_ticks()
         super().__init__()
 
-        
         self.type = "Bullet_"
+        self.bullet_type = spaceShip.bullet_type
         self.style = str(spaceShip.bullet_style)
         self.image = pygame.image.load(os.path.join("..","Ressources","Graphics","Bullet",self.type + self.style + ".png")).convert_alpha()
-        
+
         coef = (self.image.get_height())/(self.image.get_width())
         self.width = 5
         self.height = int(coef*self.width)
@@ -22,41 +45,57 @@ class bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.position = i
-        self.bullet_type = spaceShip.bullet_type
 
-        dict_file = __dict_bullet["typ_bullet"][self.bullet_type]["position"][str(i)]
-        FCTposX = sp.sympify(dict_file["x"])
-        FCTposY = sp.sympify(dict_file["y"])
-
+        dict_file = __dict_bullet["typ_bullet"][self.bullet_type]["position"][str(self.position)]
         self.angle = dict_file["angle"]
         self.image = pygame.transform.rotate(self.image, self.angle)
-        #sp.pprint(self.trajectY)
-        x, y, w, h, sw, sh, s, a = sp.symbols("x, y, w, h, sw, sw, s, a")
 
-        self.rect.x = FCTposX.subs({x:spaceShip.posX, y:spaceShip.posY, sw:spaceShip.width, sh:spaceShip.height, w:self.width, h:self.height})
-        self.rect.y = FCTposY.subs({x:spaceShip.posX, y:spaceShip.posY, sw:spaceShip.width, sh:spaceShip.height,w:self.width, h:self.height})
+        self.init_pos(dict_file, spaceShip)
         
-        self.speed___bullet = __dict_bullet["typ_bullet"][spaceShip.bullet_type]["speed"] #vitesse des balles, que l'on définira en Json les paramètres de base
-
+        self.FposX = self.rect.x 
+        self.FposY = self.rect.y
         # TRAJECTOIRE
         dict_file = __dict_bullet["typ_bullet"][self.bullet_type]["fonction"][str(self.position)]
-        self.FCTnewposX = sp.sympify(dict_file["x"])
-        self.FCTnewposY = sp.sympify(dict_file["y"])
 
-        #print(pygame.time.get_ticks() - now)
+        #self.FCTnewposXX = lambdify((x, y, s, a, t), sp.sympify(dict_file["x"]), modules=["math"])
+        #self.FCTnewposYY = lambdify((x, y, s, a, t), sp.sympify(dict_file["y"]), modules=["math"])
 
-    def update(self,__dict_bullet):#A chaque frame change la position
+        self.FCTnewposXX = dict_file["x"]
+        self.FCTnewposYY = dict_file["y"]
 
+        self.speed___bullet = __dict_bullet["typ_bullet"][spaceShip.bullet_type]["speed"] #vitesse des balles, que l'on définira en Json les paramètres de base
+        self.time = 0
+
+    def init_pos(self, dict_file, spaceShip):
+        
+        #FCTposX = lambdify((x, y, w, h, c, v), sp.sympify(dict_file["x"]), modules=["math"])
+
+        #FCTposY = lambdify((x, y, w, h, c, v), sp.sympify(dict_file["y"]), modules=["math"])
+
+        FCTposX = dict_file["x"]
+        FCTposY = dict_file["y"]
+
+        self.rect.x = FCTposX(spaceShip.rect.x, spaceShip.rect.y, self.width, self.height, spaceShip.width, spaceShip.height)
+        self.rect.y = FCTposY(spaceShip.rect.x, spaceShip.rect.y, self.width, self.height, spaceShip.width, spaceShip.height)
+
+    def update(self, __dict_bullet, delta_time):  # A chaque frame change la position
+
+        self.time += delta_time
         self.update_pos(__dict_bullet)
         self.auto_kill()
-        
+
     def update_pos(self, __dict_bullet):
-        now = pygame.time.get_ticks()
-        x, y, w, h, s, a = sp.symbols("x, y, w, h, s, a")
-        _dict = {x:self.rect.x, y:self.rect.y, w:self.width, h:self.height, s:self.speed___bullet, a:self.angle}
-        self.rect.x = self.FCTnewposX.subs(_dict)
-        self.rect.y = self.FCTnewposY.subs(_dict)
-        #print("POS UP :", pygame.time.get_ticks()-now)
+
+        self.FposX = self.FCTnewposXX(self.FposX, self.FposY, self.speed___bullet,
+                                       self.angle, self.time)
+
+        self.FposY = self.FCTnewposYY(self.FposX, self.FposY, self.speed___bullet,
+                                       self.angle, self.time)
+
+        self.rect.x = int(self.FposX)
+        self.rect.y = int(self.FposY)
+        #print("POS : ",self.position + 1 ,"X =", self.rect.x, "Y =", self.rect.y)
+
     def auto_kill(self):
 
         Surface = pygame.display.get_surface()

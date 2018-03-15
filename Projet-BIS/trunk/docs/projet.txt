@@ -1,0 +1,60 @@
+PROJET:
+
+HERO:
+  - Déplacement gauche à droite.
+  - Déplacement droite à gauche.
+  - Peut faire un tire vertical vers le haut.
+  - Le héro est représenté par un 1 (en mode console, pb régler).
+
+Ennemis:
+  - Déplacement gauche à droite, uniquement si les cases autour sont libres.
+  - Déplacement droite à gauche, uniquement si les cases autour sont libres.
+  - Déplacement de haut en bas à chaque saisie.
+  - Possibilité de tir vertical vers le bas.
+  - Les ennemis sont représentés par des 0.(en mode console, pb régler)
+
+
+Carte:
+  - Peut être de nimporte quelle hauteur.
+  - La largeur doit être impair afin de pouvoir placer le héro.( pb régler)
+  - La largeur doit être inférieur à la hauteur.(pb régler)
+  - Les zones vides sont représentées par des " - ".
+
+Tir:
+  - Le tir est représenté par un " | ".
+  - Il peut être orienté vers le haut ou vers le bas suivant le type d'entité.
+  - Le tir doit dans un premier temps, juste détruire l'ennemi et/ou le héro.
+  - Une fois la destruction faite. La case ou était l'ennemi/héro est remplacer
+  - par une case vide de type " - ".
+
+
+
+#############################################
+########PREPARATION POUR LE LATEX############
+#############################################
+
+- Choisis le Manic Shooter:
+	- Les raisons:
+		- Nous étions tous d'accord pour faire se programme.
+		- Le programme à réaliser nous semble être le plus simple à réaliser 
+			par rapport à nos connaissances actuelles.
+		- Utilisation de Pygame intuitive.
+
+	- Le développement:
+		- Création du jeu en mode console, sans utiliser les librairies dans un premier
+			temps.
+		- Création d'un jeu "intermédiaire" contenant des éléments Pygame,
+			ainsi que des éléments du jeu en console.
+		- Réalisation finale, en Pygame avec les fonctionnalitées faites
+			dans le jeu en mode console.
+
+	- les soucis rencontrés:
+		- Se mettre d'accord sur les bases et principes du jeu.
+		- Arriver à se répartir les taches entre toute les personnes du groupe.
+		- Comprendre le code des autres personnes du groupe, et reussir à
+			l'intégrer dans le sien.
+		- Reprendre son code et le réecrire de façon plus efficace, plus optimisé.
+	
+	- Ce que l'on a appris:
+		- L'utilisation de librairies internes et externes à python.
+		 

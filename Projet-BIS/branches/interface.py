@@ -23,26 +23,41 @@ class App:#Class de type App qui gère la fenêtre graphique de base.
         width=25, height=5, bg=couleurPrincipale,
         command=self.lancerPartie).pack()#Ajout d'un boutton pour lancer le jeux et quitter la fenêtre.
 
-        self.settings_button = Button(self.frame, text="Paramètres", fg="#000000",
-        relief=RAISED, compound=CENTER,
-        width=25, height=5, bg=couleurPrincipale,
-        command=self.settings).pack()#Ajout d'un boutton pour l'accès aux paramètres.
+        #self.settings_button = Button(self.frame, text="Paramètres", fg="#000000",
+        #relief=RAISED, compound=CENTER,
+        #width=25, height=5, bg=couleurPrincipale,
+        #command=self.settings).pack()#Ajout d'un boutton pour l'accès aux paramètres.
 
         self.quitter_button = Button(self.frame, text="Quitter", fg="#000000",
         relief=RAISED, compound=CENTER, bg=couleurPrincipale,
         width=25, height=5, command=self.quitterPartie).pack()#Ajout d'un boutton pour quitter la fenêtre.
 
+        self.labelWidth = Label(self.master, text="La taille en largeur: ", width=50).pack()
+        self.inputWidth = Entry(self.master, width=50)
+        self.inputWidth.pack()
+        #self.inputWidth.grid(row=2, column=1, sticky=W)
+        self.labelHeight = Label(self.master, text="La taille en hauteur: ", width=50).pack()
+        self.inputHeight = Entry(master, width=50)
+        self.inputHeight.pack()
+        #self.inputHeight.grid(row=2, column=1, sticky=W)
+
 
     def lancerPartie(self):#Fonction lancerPartie qui va quitter la fenêtre puis lancer le jeu.
+        #inputWidth = int(self.inputWidth.get())
+        #inputHeight = int(self.inputHeight.get())
+
+        #if inputHeight > 0 and inputWidth > 0:
         self.master.destroy()
         self.master.quit()
-        Jeux(900,800)
+        #Jeux(self.inputHeight, self.inputWidth)
+        menu()
 
-    def settings(self):#Fonction qui donneras accès aux paramètres du joueur.
-        windows = Toplevel(self.master, bg=couleurPrincipale)
-        windows.minsize(width=500, height=400)
+
+    #def settings(self):#Fonction qui donneras accès aux paramètres du joueur.
+        #windows = Toplevel(self.master, bg=couleurPrincipale)
+        #windows.minsize(width=500, height=400)
         #lecture()#Problème avec la lecture du fichier.
-        windows.settings_label = Label(windows, text="Accès aux paramètres", fg="#F73F0B", bg=couleurPrincipale, font=(18)).pack()
+        #windows.settings_label = Label(windows, text="Accès aux paramètres", fg="#F73F0B", bg=couleurPrincipale, font=(18)).pack()
         #self.frame.destroy()
 
     def quitterPartie(self):#Fonction qui quitte la fenêtre.
